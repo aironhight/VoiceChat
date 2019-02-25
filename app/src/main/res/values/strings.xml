@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">VoiceChat</string>
+    <string name="title_activity_login">Sign in</string>
+    <!-- Strings related to login and registration-->
+    <string name="emailHint">Enter your email</string>
+    <string name="PasswordHint">Password</string>
+
+
+
+</resources>

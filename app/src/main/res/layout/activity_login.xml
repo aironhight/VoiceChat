@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/editTextEmail"
+            android:hint="@string/emailHint"
+            android:layout_width="@dimen/editTextWidth"
+            android:layout_height="@dimen/editTextHeight"
+            android:layout_margin="@dimen/editTextMargin"
+            android:inputType="textEmailAddress"
+            />
+
+        <EditText
+            android:id="@+id/editTextPassword"
+            android:hint="@string/PasswordHint"
+            android:layout_width="@dimen/editTextWidth"
+            android:layout_height="@dimen/editTextHeight"
+            android:layout_margin="@dimen/editTextMargin"
+            android:inputType="textPassword"
+            />
+
+        <Button
+            android:id="@+id/buttonLogin"
+            android:layout_width="194dp"
+            android:layout_height="55dp"
+            android:text="Login"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewRegister"
+            android:layout_marginTop="20dp"
+            android:text ="Don't have an account? Click here to register."
+            android:textAlignment="center"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewForgottenPassword"
+            android:layout_marginTop="20dp"
+            android:text ="Forgot your password? Enter your email and click here to reset it."
+            android:textAlignment="center"
+            />
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>
