@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\AndroidStudioProjects\\VoiceChat\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-si\\values-si.xml",
+            "outputFile": "D:\\AndroidStudioProjects\\VoiceChatSEP\\VoiceChat\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-si\\values-si.xml",
             "map": [
                 {
                     "source": "C:\\Users\\airon\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-28.0.0.aar\\354b7de73a4149769aae226948e9e6a5\\res\\values-si\\values-si.xml",
