@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "962175475907",
+    "firebase_url": "https://voicechat-99242.firebaseio.com",
+    "project_id": "voicechat-99242",
+    "storage_bucket": "voicechat-99242.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:962175475907:android:56b1ad48761fa81a",
+        "android_client_info": {
+          "package_name": "sep.voicechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "962175475907-bqpb50mbblpq11ouiiipmgicgbbsfk20.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAr_K4PZLArCO9XUlG8FanknkyI0ipYnq0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
