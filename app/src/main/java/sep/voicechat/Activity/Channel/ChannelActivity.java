@@ -2,10 +2,10 @@ package sep.voicechat.activity.channel;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,11 +31,11 @@ import sep.voicechat.model.Channel;
 
 public class ChannelActivity extends AppCompatActivity implements View.OnClickListener, Serializable {
 
-    private FirebaseAuth firebaseAuth;
-    private Button logoutButton;
     private static DatabaseReference dbr;
     private static String userID;
-    private ListView channelsList;
+    private static ListView channelsList;
+    private FirebaseAuth firebaseAuth;
+    private Button logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,22 +53,23 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
         channelsList = findViewById(R.id.channelsList);
 
         updateChannelList();
-
     }
 
     @Override
     public void onClick(View v) {
-        if(v == logoutButton) {
-            //updateChannelList();
-            //createChannel();
-            //createChannelWithName("zahari");
-            logout();
+        if (v == logoutButton) {
+            createChannel();
+            //logout();
         }
     }
 
-    private void logout(){
+    /**
+     * Logs off the user and starts the Login activity. The current activity is closed by "finish()" method.
+     */
+    private void logout() {
         firebaseAuth.signOut();
         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        finish();
     }
 
     /**
@@ -81,6 +81,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
+                    channelsList.setAdapter(null);
                     ArrayList<String> channelNames = new ArrayList<String>();
 
                     Iterable<DataSnapshot> children = dataSnapshot.getChildren();
@@ -103,11 +104,12 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+
     /**
-     * Makes a popup with a channel name
+     * Makes a popup for creating a channel with a field for entering channel name
      */
     private void createChannel() {
-        AlertDialog.Builder createChannelAlert = new AlertDialog.Builder(this);
+        final AlertDialog.Builder createChannelAlert = new AlertDialog.Builder(this);
 
         createChannelAlert.setTitle("Create a channel");
         createChannelAlert.setMessage("Enter channel name");
@@ -119,17 +121,21 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
             public void onClick(DialogInterface dialog, int whichButton) {
                 //User has clicked OK
                 final String channelName = input.getText().toString();
+
+                //Check if the channel with that name already exists...
                 Query channelExistsQuery = dbr.child("channels").orderByChild("name").equalTo(channelName);
 
                 channelExistsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for(DataSnapshot data : dataSnapshot.getChildren()) {
-                            if (data.exists()) {
-                                //If a channel with the same name exists.
-                                Toast.makeText(getApplicationContext(), "Channel with this name already exists", Toast.LENGTH_LONG).show();
-                                return;
-                            }
+                        if (dataSnapshot.getValue() != null) {
+                            //If a channel with the same name exists.
+                            Toast.makeText(getApplicationContext(), "Channel with this name already exists", Toast.LENGTH_LONG).show();
+                            return;
+                        } else {
+                            createChannelWithName(channelName);
+                            updateChannelList();
+                            return;
                         }
                     }
 
@@ -138,8 +144,6 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
 
                     }
                 });
-                createChannelWithName(channelName);
-
             }
         });
 
@@ -152,6 +156,12 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
         createChannelAlert.show();
     }
 
+
+    /**
+     * Creates a channel in the firebase, and sets the owner to the current user
+     *
+     * @param channelName the name of the channel
+     */
     private static void createChannelWithName(String channelName) {
         Channel tempch = new Channel(userID, channelName);
         DatabaseReference postRef = dbr.child("channels");
@@ -159,6 +169,5 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
         postRef = dbr.child("users");
         postRef.child(userID).child(tempch.getName()).setValue(true);
     }
-
 
 }
