@@ -1,18 +1,25 @@
 package sep.voicechat.activity.channel;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +33,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import sep.voicechat.R;
+import sep.voicechat.activity.ChatActivity;
 import sep.voicechat.activity.LoginActivity;
 import sep.voicechat.model.Channel;
 
@@ -35,7 +43,8 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
     private static String userID;
     private static ListView channelsList;
     private FirebaseAuth firebaseAuth;
-    private Button logoutButton;
+    private FloatingActionButton btnCreateChannel, btnJoinChannel, btnLogoff;
+    private boolean doubleBackToExitPressedOnce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,23 +53,50 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
 
         FirebaseApp.initializeApp(this);
 
+        getSupportActionBar().hide();
         firebaseAuth = FirebaseAuth.getInstance();
         dbr = FirebaseDatabase.getInstance().getReference();
 
-        logoutButton = findViewById(R.id.BtnLogout);
-        logoutButton.setOnClickListener(this);
+
         userID = firebaseAuth.getUid();
         channelsList = findViewById(R.id.channelsList);
 
+        btnCreateChannel = findViewById(R.id.btn_createChannel);    btnCreateChannel.setOnClickListener(this);
+        btnJoinChannel = findViewById(R.id.btn_joinChannel);    btnJoinChannel.setOnClickListener(this);
+        btnLogoff = findViewById(R.id.btn_logoff);  btnLogoff.setOnClickListener(this);
+
         updateChannelList();
+
+        channelsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String clickedChannelName = (String) parent.getItemAtPosition(position);
+                Intent toChatActivity = new Intent(getApplicationContext(), ChatActivity.class);
+                toChatActivity.putExtra("channelName", clickedChannelName);
+                toChatActivity.putExtra("userID", userID);
+                startActivity(toChatActivity);
+            }
+        });
+
+        if(ActivityCompat.checkSelfPermission(ChannelActivity.this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+            //...make a request if they're not
+            ActivityCompat.requestPermissions(ChannelActivity.this, new String[]{Manifest.permission.RECORD_AUDIO}, 1);
+            return;
+        }
     }
 
     @Override
     public void onClick(View v) {
-        if (v == logoutButton) {
+
+        if(v == btnLogoff) {
+            logout();
+        } else if(v == btnCreateChannel) {
             createChannel();
-            //logout();
+        } else if(v == btnJoinChannel) {
+            joinChannel();
         }
+
     }
 
     /**
@@ -93,6 +129,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
 
                     ArrayAdapter<String> channels = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, channelNames);
                     channelsList.setAdapter(channels);
+
                 }
             }
 
@@ -103,7 +140,6 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
         });
 
     }
-
 
     /**
      * Makes a popup for creating a channel with a field for entering channel name
@@ -156,6 +192,57 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
         createChannelAlert.show();
     }
 
+    private void joinChannel() {
+        final AlertDialog.Builder createChannelAlert = new AlertDialog.Builder(this);
+
+        createChannelAlert.setTitle("Join a channel");
+        createChannelAlert.setMessage("Enter channel name");
+
+        final EditText input = new EditText(this);
+        createChannelAlert.setView(input);
+
+        createChannelAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //User has clicked OK
+                final String channelName = input.getText().toString();
+
+                //Check if the channel with that name already exists...
+                Query channelExistsQuery = dbr.child("channels").orderByChild("name").equalTo(channelName);
+
+                channelExistsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() != null) {
+                            //If a channel with this name exists.
+                            DatabaseReference postRef = dbr.child("users");
+                            postRef.child(userID).child(channelName).setValue(true);
+                            Toast.makeText(getApplicationContext(), "Channel joined", Toast.LENGTH_SHORT).show();
+                            return;
+                        } else {
+                            //Channel with this name does not exist
+                            Toast.makeText(getApplicationContext(), "Channel with this name does not exist", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                updateChannelList();
+            }
+        });
+
+        createChannelAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
+
+        createChannelAlert.show();
+    }
 
     /**
      * Creates a channel in the firebase, and sets the owner to the current user
@@ -168,6 +255,25 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
         postRef.child(tempch.getName()).setValue(tempch);
         postRef = dbr.child("users");
         postRef.child(userID).child(tempch.getName()).setValue(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            moveTaskToBack(true);
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Press back button again to exit the application...", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 
 }

@@ -1,9 +1,11 @@
 package sep.voicechat.activity;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -17,6 +19,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.nio.channels.Channel;
 
@@ -115,23 +122,38 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void passwordReset() {
-        if (editTextEmail.getText().toString().length() < 3) {
-            Toast.makeText(this, "Please enter your Email in the email field.", Toast.LENGTH_LONG).show();
-        } else {
-            progressDialog.setMessage("Please wait...");
-            progressDialog.show();
-            firebaseAuth.sendPasswordResetEmail(editTextEmail.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        progressDialog.hide();
-                        Toast.makeText(getApplicationContext(), "A password reset email was sent to your email address.", Toast.LENGTH_LONG).show();
-                    } else {
-                        progressDialog.hide();
-                        Toast.makeText(getApplicationContext(), "Failed to send password reset email: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+        final AlertDialog.Builder createChannelAlert = new AlertDialog.Builder(this);
+
+        createChannelAlert.setTitle("Reset your password");
+        createChannelAlert.setMessage("Enter your e-mail address");
+
+        final EditText input = new EditText(this);
+        createChannelAlert.setView(input);
+
+        createChannelAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //User has clicked OK
+                progressDialog.setMessage("Please wait...");
+                progressDialog.show();
+                firebaseAuth.sendPasswordResetEmail(editTextEmail.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            progressDialog.hide();
+                            Toast.makeText(getApplicationContext(), "A password reset email was sent to your email address.", Toast.LENGTH_LONG).show();
+                        } else {
+                            progressDialog.hide();
+                            Toast.makeText(getApplicationContext(), "Failed to send password reset email: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
+        });
+
+        createChannelAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
     }
 }

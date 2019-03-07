@@ -2,71 +2,41 @@
 <instant-run
     abi="arm64-v8a,armeabi-v7a,armeabi"
     api-level="26"
-    build-mode="FULL"
+    build-mode="HOT_WARM"
     density="420dpi"
     format="10"
     plugin-version="3.3.1"
-    timestamp="1551712938061"
+    timestamp="1551982900182"
     token="8923360601994176426"
-    verifier="FULL_BUILD_REQUESTED" >
+    verifier="COMPATIBLE" >
 
     <task
         name="javac"
-        duration="312" />
+        duration="379" />
     <task
         name="instant-run-dex"
-        duration="0" />
+        duration="9" />
     <task
         name="instant-run-transform"
-        duration="39" />
+        duration="125" />
     <task
         name="verifier"
-        duration="5" />
+        duration="3" />
 
     <artifact
-        location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_6.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\dep\dependencies.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_5.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_4.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\resources\instant-run\debug\resources-debug.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_3.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_2.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_7.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
-        type="SPLIT" />
-    <artifact
-        location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\instant-run-apk\debug\app-debug.apk"
-        type="SPLIT_MAIN" />
+        location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\reload-dex\debug\classes.dex"
+        type="RELOAD_DEX" />
 
     <build
         build-mode="FULL"
-        timestamp="1551712938061"
+        timestamp="1551980479779"
         verifier="FULL_BUILD_REQUESTED" >
+        <artifact
+            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_7.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_4.apk"
+            type="SPLIT" />
         <artifact
             location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_6.apk"
             type="SPLIT" />
@@ -80,25 +50,19 @@
             location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
             type="SPLIT" />
         <artifact
-            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_4.apk"
-            type="SPLIT" />
-        <artifact
             location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
-            type="SPLIT" />
-        <artifact
-            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
             type="SPLIT" />
         <artifact
             location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\resources\instant-run\debug\resources-debug.apk"
             type="SPLIT" />
         <artifact
-            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_3.apk"
+            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
             type="SPLIT" />
         <artifact
             location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_2.apk"
             type="SPLIT" />
         <artifact
-            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_7.apk"
+            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_3.apk"
             type="SPLIT" />
         <artifact
             location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
@@ -106,6 +70,62 @@
         <artifact
             location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\instant-run-apk\debug\app-debug.apk"
             type="SPLIT_MAIN" />
+    </build>
+    <build
+        build-mode="COLD"
+        ir-eligibility="METHOD_ADDED"
+        timestamp="1551982675187"
+        verifier="COLD_SWAP_REQUESTED" >
+        <artifact
+            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\dep\dependencies.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_5.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_2.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_3.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_6.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\instant-run-apk\debug\app-debug.apk"
+            type="SPLIT_MAIN" />
+    </build>
+    <build
+        build-mode="COLD"
+        ir-eligibility="COMPATIBLE"
+        timestamp="1551982788795"
+        verifier="COLD_SWAP_REQUESTED" >
+        <artifact
+            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_7.apk"
+            type="SPLIT" />
+        <artifact
+            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_4.apk"
+            type="SPLIT" />
+    </build>
+    <build
+        build-mode="HOT_WARM"
+        timestamp="1551982900182"
+        verifier="COMPATIBLE" >
+        <artifact
+            location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\reload-dex\debug\classes.dex"
+            type="RELOAD_DEX" />
     </build>
 
 </instant-run>

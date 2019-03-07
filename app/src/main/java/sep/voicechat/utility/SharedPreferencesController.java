@@ -19,19 +19,19 @@ public class SharedPreferencesController {
         editor = preferences.edit();
         gson = new Gson();
     }
-
-    private String saveDBReference(DBManager DBmanager) {
-        String DBMjson = gson.toJson(DBmanager);
-        editor.putString("DBmanager", DBMjson);
-        editor.commit();
-        return DBMjson;
-    }
-
-    public DBManager getDBManager() {
-        String DBMjson = preferences.getString("DBmanager", saveDBReference(new DBManager()));
-        DBManager dbmObject = gson.fromJson(DBMjson, DBManager.class);
-        return dbmObject;
-    }
+//
+//    private String saveDBReference(DBManager DBmanager) {
+//        String DBMjson = gson.toJson(DBmanager);
+//        editor.putString("DBmanager", DBMjson);
+//        editor.commit();
+//        return DBMjson;
+//    }
+//
+//    public DBManager getDBManager() {
+//        String DBMjson = preferences.getString("DBmanager", saveDBReference(new DBManager()));
+//        DBManager dbmObject = gson.fromJson(DBMjson, DBManager.class);
+//        return dbmObject;
+//    }
 
 
 }
