@@ -11,6 +11,10 @@ public class Message {
         this.listenedBy = listenedBy;
     }
 
+    public Message() {
+        //Firebase requires an empty constructor...
+    }
+
     public String getFilePath() {
         return filePath;
     }
@@ -19,7 +23,16 @@ public class Message {
         return listenedBy;
     }
 
+    public void addListener(String userID) {
+        if(listenedBy == null ) {
+            listenedBy = new ArrayList<>();
+        }
+        listenedBy.add(userID);
+    }
     public static boolean messageIsListened(Message message, String userId) {
+        if(message.getListenedBy() == null) {
+            return false;
+        }
         return message.getListenedBy().contains(userId);
     }
 

@@ -6,7 +6,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="18"
+        android:minSdkVersion="23"
         android:targetSdkVersion="28" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
@@ -34,10 +34,10 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="sep.voicechat.activity.ChatActivity"
-            android:parentActivityName="sep.voicechat.activity.channel.ChannelActivity" >
+            android:parentActivityName="sep.voicechat.activity.ChannelActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.channel.ChannelActivity" />
+                android:value=".activity.ChannelActivity" />
         </activity>
         <activity
             android:name="sep.voicechat.activity.LoginActivity"
@@ -56,7 +56,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.LoginActivity" />
         </activity>
-        <activity android:name="sep.voicechat.activity.channel.ChannelActivity" />
+        <activity android:name="sep.voicechat.activity.ChannelActivity" />
         <activity
             android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
             android:excludeFromRecents="true"

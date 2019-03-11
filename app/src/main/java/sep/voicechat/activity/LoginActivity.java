@@ -19,16 +19,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-
-import java.nio.channels.Channel;
 
 import sep.voicechat.R;
-import sep.voicechat.activity.channel.ChannelActivity;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -65,9 +57,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         forgottenPasswordTextView.setOnClickListener(this);
 
         progressDialog = new ProgressDialog(this);
-
-        editTextEmail.setText("aironhight@yahoo.com");
-        editTextPassword.setText("oanaoana");
     }
 
     @Override
@@ -155,5 +144,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // Canceled.
             }
         });
+
+        createChannelAlert.show();
     }
 }

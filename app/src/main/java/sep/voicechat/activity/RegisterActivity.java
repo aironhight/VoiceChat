@@ -17,7 +17,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import sep.voicechat.R;
-import sep.voicechat.activity.channel.ChannelActivity;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 

@@ -16,7 +16,6 @@ public class MediaController {
     private MediaPlayer mediaPlayer;
     private String fileName, channelName, userId;
     private final String LOG_TAG = "MediaController";
-    private boolean initialStage = true;
     private IRecorder recorderCallback;
 
     public MediaController(String channelName, String userId, IRecorder recorderCallback) {
@@ -34,7 +33,7 @@ public class MediaController {
     public void startRecording() {
         Date currentTime = Calendar.getInstance().getTime();
         fileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        fileName += "/" + channelName + "_" + userId + "_" + currentTime + "_" + ".3gp";
+        fileName += "/" + channelName + "_" + userId + "_" + currentTime + ".3gp";
 
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -63,6 +62,11 @@ public class MediaController {
         fileName = "";
     }
 
+    public void stopListening() {
+        mediaPlayer.stop();
+        mediaPlayer.reset();
+    }
+
     /**
      * Streams the audio from a given URL
      * @param URL for aduio streaming
@@ -77,14 +81,13 @@ public class MediaController {
     class Player extends AsyncTask<String, Void, Boolean> {
         @Override
         protected Boolean doInBackground(String... strings) {
-            Boolean prepared = false;
+            Boolean prepared;
 
             try {
                 mediaPlayer.setDataSource(strings[0]);
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mediaPlayer) {
-                        initialStage = true;
 
                         mediaPlayer.stop();
                         mediaPlayer.reset();
@@ -92,6 +95,12 @@ public class MediaController {
                 });
 
                 mediaPlayer.prepare();
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        recorderCallback.onListenEnd();
+                    }
+                });
                 prepared = true;
 
             } catch (Exception e) {
@@ -107,7 +116,6 @@ public class MediaController {
             super.onPostExecute(aBoolean);
 
             mediaPlayer.start();
-            initialStage = false;
         }
 
         @Override

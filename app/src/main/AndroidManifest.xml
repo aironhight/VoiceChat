@@ -23,11 +23,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.ChatActivity"
-            android:parentActivityName=".activity.channel.ChannelActivity">
+            android:parentActivityName=".activity.ChannelActivity">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.channel.ChannelActivity" />
+                android:value=".activity.ChannelActivity" />
 
         </activity>
 
@@ -48,7 +48,7 @@
                 android:value=".activity.LoginActivity" />
         </activity>
 
-        <activity android:name=".activity.channel.ChannelActivity"/>
+        <activity android:name=".activity.ChannelActivity"/>
     </application>
 
 </manifest>
