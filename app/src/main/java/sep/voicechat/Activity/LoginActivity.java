@@ -44,6 +44,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (firebaseAuth.getCurrentUser() != null) {
             startActivity(new Intent(getApplicationContext(), ChannelActivity.class));
+            finish();
         }
 
         buttonLogIn = findViewById(R.id.buttonLogin);
@@ -67,7 +68,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (view == registerTextView) {
             startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
-            //finish();
         }
 
         if (view == forgottenPasswordTextView) {

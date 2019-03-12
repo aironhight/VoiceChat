@@ -16,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +67,8 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
         checkPermissions();
         channelName = getIntent().getStringExtra("channelName");
         userID = getIntent().getStringExtra("userID");
+        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -120,19 +123,18 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
         });
     }
 
+    @Override
+    protected void onResume() {
+        checkPermissions();
+        super.onResume();
+    }
+
     /**
      * Starts the speech recognizer and listens for words.
      */
     private void listenForCommand() {
         speechRecognizer.startListening(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH));
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -145,8 +147,7 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
                     //Permissions granted
                 } else {
                     //Permissions denied
-                    moveTaskToBack(true);
-                    onDestroy();
+                    System.exit(0);
                 }
                 return;
             }
@@ -157,8 +158,7 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
                     //Permissions granted
                 } else {
                     //Permissions denied
-                    moveTaskToBack(true);
-                    onDestroy();
+                    System.exit(0);
                 }
                 return;
             }
@@ -169,8 +169,7 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
                     //Permissions granted
                 } else {
                     //Permissions denied
-                    moveTaskToBack(true);
-                    onDestroy();
+                    System.exit(0);
                 }
                 return;
             }
@@ -268,6 +267,7 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
 
     /**
      * Deletes a file from the default.
+     *
      * @param fileName the file to be deleted
      * @return true if the file is delted, false if not.
      */
@@ -316,6 +316,8 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
             record();
         } else if (splittedArray.contains("listen")) {
             listenMessages();
+        } else if (splittedArray.contains("go") && splittedArray.contains("back")) {
+            onBackPressed();
         } else {
             Toast.makeText(getApplicationContext(), "Command not recognized, try again", Toast.LENGTH_SHORT).show();
             listenForCommand();
@@ -348,6 +350,11 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
         }
     }
 
+    /**
+     * The program has stopped recording. This is called from the IRecorder interface
+     *
+     * @param fileName The filename of the file that has been recorded
+     */
     @Override
     public void stoppedRecording(String fileName) {
         uploadFile(fileName);
@@ -374,9 +381,9 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        PERMISSION_REQUEST_READ_EXTERNAL_STORAGE);
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    PERMISSION_REQUEST_READ_EXTERNAL_STORAGE);
         }
 
         //Checks for writing external storage permissions.
@@ -409,7 +416,7 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
     }
 
     public void stopListening() {
-        if(listening) {
+        if (listening) {
             mediaController.stopListening();
         }
     }

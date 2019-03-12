@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -38,29 +40,23 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
     private static DatabaseReference dbr;
     private static String userID;
     private static ListView channelsList;
+    private final int PERMISSION_REQUEST_READ_EXTERNAL_STORAGE = 1;
+    private final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 2;
+    private final int PERMISSION_REQUEST_RECORD_AUDIO = 3;
     private FirebaseAuth firebaseAuth;
     private FloatingActionButton btnCreateChannel, btnJoinChannel, btnLogoff;
     private boolean doubleBackToExitPressedOnce;
 
-    /**
-     * Creates a channel in the firebase, and sets the owner to the current user
-     *
-     * @param channelName the name of the channel
-     */
-    private static void createChannelWithName(String channelName) {
-        Channel tempch = new Channel(userID, channelName);
-        DatabaseReference postRef = dbr.child("channels");
-        postRef.child(tempch.getName()).setValue(tempch);
-        postRef = dbr.child("users");
-        postRef.child(userID).child(tempch.getName()).setValue(true);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_channel);
+        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         FirebaseApp.initializeApp(this);
+
+        checkPermissions();
 
         getSupportActionBar().hide();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -89,13 +85,12 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(toChatActivity);
             }
         });
+    }
 
-        if (ActivityCompat.checkSelfPermission(ChannelActivity.this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-
-            //...make a request if they're not
-            ActivityCompat.requestPermissions(ChannelActivity.this, new String[]{Manifest.permission.RECORD_AUDIO}, 1);
-            return;
-        }
+    @Override
+    protected void onResume() {
+        checkPermissions();
+        super.onResume();
     }
 
     @Override
@@ -109,6 +104,19 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
             joinChannel();
         }
 
+    }
+    
+    /**
+     * Creates a channel in the firebase, and sets the owner to the current user
+     *
+     * @param channelName the name of the channel
+     */
+    private static void createChannelWithName(String channelName) {
+        Channel tempch = new Channel(userID, channelName);
+        DatabaseReference postRef = dbr.child("channels");
+        postRef.child(tempch.getName()).setValue(tempch);
+        postRef = dbr.child("users");
+        postRef.child(userID).child(tempch.getName()).setValue(true);
     }
 
     /**
@@ -274,6 +282,79 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                 doubleBackToExitPressedOnce = false;
             }
         }, 2000);
+    }
+
+    private void checkPermissions() {
+        //Checks for reading external storage permissions.
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    PERMISSION_REQUEST_READ_EXTERNAL_STORAGE);
+        }
+
+        //Checks for writing external storage permissions.
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE);
+        }
+
+        //Checks for recording audio permissions
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECORD_AUDIO},
+                    PERMISSION_REQUEST_RECORD_AUDIO);
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_READ_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //Permissions granted
+                } else {
+                    //Permissions denied
+                    System.exit(0);
+                }
+                return;
+            }
+            case PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //Permissions granted
+                } else {
+                    //Permissions denied
+                    System.exit(0);
+                }
+                return;
+            }
+            case PERMISSION_REQUEST_RECORD_AUDIO: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //Permissions granted
+                } else {
+                    //Permissions denied
+                    System.exit(0);
+                }
+                return;
+            }
+        }
     }
 
 }

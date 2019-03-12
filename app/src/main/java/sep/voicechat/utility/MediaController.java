@@ -12,10 +12,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MediaController {
+    private final String LOG_TAG = "MediaController";
     private MediaRecorder recorder;
     private MediaPlayer mediaPlayer;
     private String fileName, channelName, userId;
-    private final String LOG_TAG = "MediaController";
     private IRecorder recorderCallback;
 
     public MediaController(String channelName, String userId, IRecorder recorderCallback) {
@@ -69,6 +69,7 @@ public class MediaController {
 
     /**
      * Streams the audio from a given URL
+     *
      * @param URL for aduio streaming
      */
     public void streamFromURL(String URL) {
