@@ -5,23 +5,24 @@
     build-mode="COLD"
     density="420dpi"
     format="10"
+    ir-eligibility="COMPATIBLE"
     plugin-version="3.3.1"
-    timestamp="1552587536042"
+    timestamp="1552593813176"
     token="8923360601994176426"
-    verifier="METHOD_ADDED" >
+    verifier="COLD_SWAP_REQUESTED" >
 
     <task
         name="javac"
-        duration="631" />
+        duration="488" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="66" />
+        duration="52" />
     <task
         name="verifier"
-        duration="5" />
+        duration="6" />
 
     <artifact
         location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_7.apk"
@@ -29,7 +30,7 @@
 
     <build
         build-mode="FULL"
-        timestamp="1552587011369"
+        timestamp="1552592716767"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
             location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_7.apk"
@@ -73,8 +74,9 @@
     </build>
     <build
         build-mode="COLD"
-        timestamp="1552587536042"
-        verifier="METHOD_ADDED" >
+        ir-eligibility="COMPATIBLE"
+        timestamp="1552593813176"
+        verifier="COLD_SWAP_REQUESTED" >
         <artifact
             location="D:\AndroidStudioProjects\VoiceChatSEP\VoiceChat\app\build\intermediates\split-apk\debug\slices\slice_7.apk"
             type="SPLIT" />

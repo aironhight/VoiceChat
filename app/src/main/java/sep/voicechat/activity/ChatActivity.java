@@ -225,12 +225,14 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
         if (messagesToListen.size() == 0) {
             //There are messages to listenMessages
             backgroundTv.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
+            backgroundTv.setText("Click to activate the command listener...");
             Toast.makeText(getApplicationContext(), "There are no messages to listen currently", Toast.LENGTH_SHORT).show();
         } else {
             //There are messages to listenMessages
             backgroundTv.setBackgroundColor(ContextCompat.getColor(this, R.color.blue));
             backgroundTv.setText("Listening... \n press to play next");
             listening = true;
+
             final Message messageToListen = messagesToListen.remove(0);
 
             storageReference.child(messageToListen.getFilePath()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -427,7 +429,9 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
      */
     public void onListenEnd() {
         backgroundTv.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
-        backgroundTv.setText("Listening for a command");
+        //backgroundTv.setText("Listening for a command");
+
+        stopListening();
         listening = false;
         listenMessages();
     }
