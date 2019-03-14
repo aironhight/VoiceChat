@@ -9,7 +9,7 @@ public class Channel implements Serializable {
     private String name;
 
     public Channel() {
-
+        //Firebase requires an empty constructor
     }
 
     public Channel(String owner, String name) {

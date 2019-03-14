@@ -99,12 +99,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (task.isSuccessful()) {
                     progressDialog.hide();
                     progressDialog.dismiss();
-                    //logging in is successful. Start the Program activity
+                    //logging in is successful. Start the Channel activity
                     startActivity(new Intent(getApplicationContext(), ChannelActivity.class));
                     finish();
                 } else {
                     progressDialog.hide();
-                    Toast.makeText(getApplicationContext(), "Email/Password combination doesn't match.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });

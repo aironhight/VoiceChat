@@ -65,6 +65,7 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         checkPermissions();
+
         channelName = getIntent().getStringExtra("channelName");
         userID = getIntent().getStringExtra("userID");
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -80,7 +81,6 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
         if (firebaseAuth.getCurrentUser() == null) {
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
-        checkPermissions();
         initialize();
 
         backgroundTv = findViewById(R.id.backgroundTv);
@@ -307,19 +307,29 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
     @Override
     public void onResults(Bundle results) {
         Log.i(TAG, "onResults: " + results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).get(0));
-        String ssd = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).get(0);
-        ArrayList<String> splittedArray = new ArrayList<>(Arrays.asList(ssd.split(" ")));
+        //String ssd = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).get(0);
+        ArrayList<String> strings = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+        ArrayList<String> splittedArray = new ArrayList<>();
+
+        for (int i = 0; i < strings.size(); i++) {
+            splittedArray.addAll(Arrays.asList(strings.get(i).split(" ")));
+        }
 
         if (splittedArray.contains("record") || splittedArray.contains("recording")) {
             record();
+            return;
         } else if (splittedArray.contains("listen")) {
             listenMessages();
+            return;
         } else if (splittedArray.contains("go") && splittedArray.contains("back")) {
             onBackPressed();
+            return;
         } else {
             Toast.makeText(getApplicationContext(), "Command not recognized, try again", Toast.LENGTH_SHORT).show();
             listenForCommand();
+            return;
         }
+
 
     }
 
@@ -433,7 +443,15 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
 
     @Override
     protected void onPause() {
+        if(listening) {
+            stopListening();
+        }
         super.onPause();
-        stopListening();
+    }
+
+    @Override
+    protected void onDestroy() {
+        speechRecognizer.destroy(); //Otherwise it leaks...
+        super.onDestroy();
     }
 }

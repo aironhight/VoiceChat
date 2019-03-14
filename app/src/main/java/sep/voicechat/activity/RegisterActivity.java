@@ -71,13 +71,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    //Successful registration
                     progressDialog.hide();
                     Log.i("Registration response", "Account successfully registered.");
                     Toast.makeText(RegisterActivity.this, "Registered successfully!", Toast.LENGTH_SHORT).show();
                     finish();
                     startActivity(new Intent(getApplicationContext(), ChannelActivity.class));
-
                 } else {
+                    //Registration failed...
                     progressDialog.hide();
                     Log.i("Registration response", "Failed to register: " + task.getException().getMessage());
                     Toast.makeText(RegisterActivity.this, "Failed to register: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();

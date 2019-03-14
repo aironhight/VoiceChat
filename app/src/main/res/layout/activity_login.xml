@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/textViewForgottenPassword"
             android:layout_marginTop="20dp"
-            android:text ="Forgot your password? Enter your email and click here to reset it."
+            android:text ="Forgot your password? Click here to reset it!"
             android:textAlignment="center"
             />
     </LinearLayout>
