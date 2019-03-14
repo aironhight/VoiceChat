@@ -308,13 +308,13 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
 
     @Override
     public void onResults(Bundle results) {
-        Log.i(TAG, "onResults: " + results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).get(0));
+        Log.i(TAG, "(voiceRecognizer)onResults: " + results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).get(0));
         //String ssd = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).get(0);
         ArrayList<String> strings = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         ArrayList<String> splittedArray = new ArrayList<>();
 
         for (int i = 0; i < strings.size(); i++) {
-            splittedArray.addAll(Arrays.asList(strings.get(i).split(" ")));
+            splittedArray.addAll(Arrays.asList(strings.get(i).split(" "))); //This is added for bigger chance of recognizing the word...
         }
 
         if (splittedArray.contains("record") || splittedArray.contains("recording")) {
@@ -331,8 +331,6 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
             listenForCommand();
             return;
         }
-
-
     }
 
     @Override
