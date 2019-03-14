@@ -85,6 +85,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(toChatActivity);
             }
         });
+
     }
 
     @Override
@@ -105,18 +106,19 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
         }
 
     }
-    
+
     /**
      * Creates a channel in the firebase, and sets the owner to the current user
      *
      * @param channelName the name of the channel
      */
-    private static void createChannelWithName(String channelName) {
+    private void createChannelWithName(String channelName) {
         Channel tempch = new Channel(userID, channelName);
         DatabaseReference postRef = dbr.child("channels");
         postRef.child(tempch.getName()).setValue(tempch);
         postRef = dbr.child("users");
         postRef.child(userID).child(tempch.getName()).setValue(true);
+        updateChannelList();
     }
 
     /**
@@ -226,7 +228,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                 //User has clicked OK
                 final String channelName = input.getText().toString();
 
-                //Check if the channel with that name already exists...
+                //Check if the channel with that name exists...
                 Query channelExistsQuery = dbr.child("channels").orderByChild("name").equalTo(channelName);
 
                 channelExistsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -234,6 +236,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getValue() != null) {
                             //If a channel with this name exists.
+                            //There is no need to check if the user has already joined the channel or not...
                             DatabaseReference postRef = dbr.child("users");
                             postRef.child(userID).child(channelName).setValue(true);
                             Toast.makeText(getApplicationContext(), "Channel joined", Toast.LENGTH_SHORT).show();

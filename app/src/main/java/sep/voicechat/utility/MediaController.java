@@ -62,6 +62,9 @@ public class MediaController {
         fileName = "";
     }
 
+    /**
+     * Stops and resets the media player
+     */
     public void stopListening() {
         mediaPlayer.stop();
         mediaPlayer.reset();
@@ -113,8 +116,8 @@ public class MediaController {
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
+        protected void onPostExecute(Boolean bool) {
+            super.onPostExecute(bool);
 
             mediaPlayer.start();
         }

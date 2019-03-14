@@ -29,11 +29,11 @@ public class Message {
         }
         listenedBy.add(userID);
     }
-    public static boolean messageIsListened(Message message, String userId) {
+    public static boolean messageIsListened(Message message, String userID) {
         if(message.getListenedBy() == null) {
             return false;
         }
-        return message.getListenedBy().contains(userId);
+        return message.getListenedBy().contains(userID);
     }
 
 }

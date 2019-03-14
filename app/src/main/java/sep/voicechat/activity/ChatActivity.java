@@ -69,7 +69,6 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
         userID = getIntent().getStringExtra("userID");
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-
         firebaseAuth = FirebaseAuth.getInstance();
 
         mediaController = new MediaController(channelName, userID, this);
@@ -81,7 +80,7 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
         if (firebaseAuth.getCurrentUser() == null) {
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
-
+        checkPermissions();
         initialize();
 
         backgroundTv = findViewById(R.id.backgroundTv);
@@ -121,6 +120,8 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
 
             }
         });
+
+        listenForCommand();
     }
 
     @Override
@@ -173,11 +174,8 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
                 }
                 return;
             }
-
-
         }
     }
-
 
     private void initialize() {
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
@@ -368,6 +366,9 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
         backgroundTv.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
     }
 
+    /**
+     * The recorder has stopped recording.
+     */
     private void stopRecording() {
         mediaController.stopRecording();
         recording = false;
@@ -375,6 +376,9 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
         backgroundTv.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
     }
 
+    /**
+     * Checks the device for the required permissions
+     */
     private void checkPermissions() {
         //Checks for reading external storage permissions.
         if (ContextCompat.checkSelfPermission(this,
@@ -408,6 +412,9 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
 
     }
 
+    /**
+     * This method gets called when a message listening ends.
+     */
     public void onListenEnd() {
         backgroundTv.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
         backgroundTv.setText("Listening for a command");
@@ -415,6 +422,9 @@ public class ChatActivity extends AppCompatActivity implements RecognitionListen
         listenMessages();
     }
 
+    /**
+     * Stops the media player in the MediaController and resets it.
+     */
     public void stopListening() {
         if (listening) {
             mediaController.stopListening();
